@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatefulWidget {
-  const SplashPage({super.key});
+  const SplashPage({super.key}); // Removido o parâmetro controller
 
   @override
   State<SplashPage> createState() => _SplashPageState();
@@ -16,7 +16,6 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _navigateToCourseList() async {
-    // Aguarda 2 segundos para mostrar a splash screen
     await Future.delayed(const Duration(seconds: 2));
 
     if (mounted) {
@@ -32,7 +31,6 @@ class _SplashPageState extends State<SplashPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Logo do app - você pode substituir por um asset real
             FlutterLogo(size: 100, style: FlutterLogoStyle.stacked),
             const SizedBox(height: 24),
             const Text(
