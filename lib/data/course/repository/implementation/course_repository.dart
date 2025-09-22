@@ -1,0 +1,40 @@
+﻿import 'package:lxp_platform/core/network/result_data.dart';
+import 'package:lxp_platform/core/network/failure.dart';
+import 'package:lxp_platform/data/course/datasource/i_course_datasource.dart';
+import 'package:lxp_platform/data/course/dto/request/get_courses_request_dto.dart';
+import 'package:lxp_platform/data/course/models/course_model.dart';
+import 'package:lxp_platform/data/course/repository/i_course_repository.dart';
+
+class CourseRepository implements ICourseRepository {
+  final ICourseDataSource dataSource;
+
+  CourseRepository({required this.dataSource});
+
+  @override
+  Future<ResultData<Failure, List<CourseModel>>> getCoursesByCategory(
+    GetCoursesRequestDTO params,
+  ) async {
+    try {
+      final coursesDTO = await dataSource.getCoursesByCategory(params);
+      final courses = coursesDTO.map((dto) => CourseModel.fromDTO(dto, params.category)).toList();
+      return ResultData.success(courses);
+    } on Failure catch (e) {
+      return ResultData.error(e);
+    } catch (e) {
+      return ResultData.error(Failure(e.toString()));
+    }
+  }
+
+  @override
+  Future<ResultData<Failure, CourseModel>> getCourseDetails(String courseId) async {
+    try {
+      final courseDTO = await dataSource.getCourseDetails(courseId);
+      final course = CourseModel.fromDTO(courseDTO, '');
+      return ResultData.success(course);
+    } on Failure catch (e) {
+      return ResultData.error(e);
+    } catch (e) {
+      return ResultData.error(Failure(e.toString()));
+    }
+  }
+}

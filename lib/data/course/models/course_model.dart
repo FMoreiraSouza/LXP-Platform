@@ -1,4 +1,5 @@
-﻿// lib/core/models/course_model.dart
+﻿import 'package:lxp_platform/data/course/dto/response/course_response_dto.dart';
+
 class CourseModel {
   final String id;
   final String title;
@@ -18,14 +19,14 @@ class CourseModel {
     required this.category,
   });
 
-  factory CourseModel.fromJson(Map<String, dynamic> json, String category) {
+  factory CourseModel.fromDTO(CourseResponseDTO dto, String category) {
     return CourseModel(
-      id: json['id']?.toString() ?? '',
-      title: json['title']?.toString() ?? 'Sem título',
-      subtitle: json['subtitle']?.toString(),
-      banner: json['banner']?.toString(),
-      summary: json['summary']?.toString(),
-      objective: json['objective']?.toString(),
+      id: dto.id,
+      title: dto.title,
+      subtitle: dto.subtitle,
+      banner: dto.banner,
+      summary: dto.summary,
+      objective: dto.objective,
       category: category,
     );
   }
@@ -33,13 +34,4 @@ class CourseModel {
   static CourseModel empty() {
     return CourseModel(id: '', title: '', category: '');
   }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is CourseModel && other.id == id;
-  }
-
-  @override
-  int get hashCode => id.hashCode;
 }

@@ -36,7 +36,7 @@ class CourseDetailController extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         final data = response.data;
-        _course = CourseModel.fromJson(data, '');
+        _course = data;
 
         // Verifica se é favorito
         _isFavorite = await _isCourseFavorite(courseId);
