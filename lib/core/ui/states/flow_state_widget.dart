@@ -1,5 +1,4 @@
-﻿// lib/core/ui/states/flow_state_widget.dart
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:lxp_platform/core/utils/enums/flow_state.dart';
 
 class FlowStateWidget extends StatelessWidget {

@@ -33,22 +33,13 @@ class _CourseListPageState extends State<CourseListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Cursos Disponíveis'), centerTitle: true, elevation: 1),
-      body: Stack(
-        children: [
-          AnimatedBuilder(
-            animation: widget.controller,
-            builder: (context, child) {
-              return _getWidget(widget.controller.state);
-            },
-          ),
-          AnimatedBuilder(
-            animation: widget.controller,
-            builder: (context, child) {
-              return Visibility(visible: widget.controller.isLoading, child: const AppLoadWidget());
-            },
-          ),
-        ],
+      body: SafeArea(
+        child: AnimatedBuilder(
+          animation: widget.controller,
+          builder: (context, child) {
+            return _getWidget(widget.controller.state);
+          },
+        ),
       ),
     );
   }
@@ -58,32 +49,41 @@ class _CourseListPageState extends State<CourseListPage> {
       case PageStates.successState:
         return CourseListWidget(controller: widget.controller);
       case PageStates.emptyState:
-        return FlowStateWidget(
-          title: 'Nenhum curso disponível',
-          description: 'Não encontramos cursos nas categorias fiscais, contábeis e trabalhistas.',
-          hideButton: true,
-          flowState: FlowState.empty,
+        return Center(
+          child: SingleChildScrollView(
+            child: FlowStateWidget(
+              title: 'Nenhum curso disponível',
+              description:
+                  'Não encontramos cursos nas categorias fiscais, contábeis e trabalhistas.',
+              hideButton: true,
+              flowState: FlowState.empty,
+            ),
+          ),
         );
       case PageStates.loadingState:
-        return const AppLoadWidget(
-          label: 'Carregando cursos...',
-          bgColor: Colors.transparent,
-          textColor: Colors.black54,
-        );
+        return const AppLoadWidget(label: 'Carregando cursos...', textColor: Colors.black54);
       case PageStates.noConnection:
-        return FlowStateWidget(
-          function: () => widget.controller.loadAllCourses(),
-          title: "Sem conexão",
-          description: "Verifique sua conexão com a internet e tente novamente.",
-          flowState: FlowState.noConnection,
+        return Center(
+          child: SingleChildScrollView(
+            child: FlowStateWidget(
+              function: () => widget.controller.loadAllCourses(),
+              title: "Sem conexão",
+              description: "Verifique sua conexão com a internet e tente novamente.",
+              flowState: FlowState.noConnection,
+            ),
+          ),
         );
       case PageStates.errorState:
       default:
-        return FlowStateWidget(
-          function: () => widget.controller.loadAllCourses(),
-          title: "Erro ao carregar",
-          description: widget.controller.error ?? "Ocorreu um erro inesperado.",
-          flowState: FlowState.error,
+        return Center(
+          child: SingleChildScrollView(
+            child: FlowStateWidget(
+              function: () => widget.controller.loadAllCourses(),
+              title: "Erro ao carregar",
+              description: widget.controller.error ?? "Ocorreu um erro inesperado.",
+              flowState: FlowState.error,
+            ),
+          ),
         );
     }
   }
