@@ -1,9 +1,9 @@
-﻿import 'package:flutter/material.dart';
-import 'package:lxp_platform/core/ui/states/flow_state_widget.dart';
-import 'package:lxp_platform/core/utils/enums/flow_state.dart';
+﻿// Atualize o CourseListWidget existente
+import 'package:flutter/material.dart';
 import 'package:lxp_platform/data/models/course_model.dart';
 import 'package:lxp_platform/features/course_list/controllers/course_list_controller.dart';
 import 'package:lxp_platform/features/course_list/ui/widgets/course_item_widget.dart';
+import 'package:lxp_platform/routes/app_routes_manager.dart';
 
 class CourseListWidget extends StatefulWidget {
   final CourseListController controller;
@@ -15,6 +15,22 @@ class CourseListWidget extends StatefulWidget {
 }
 
 class _CourseListWidgetState extends State<CourseListWidget> {
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_onControllerChange);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_onControllerChange);
+    super.dispose();
+  }
+
+  void _onControllerChange() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -41,6 +57,18 @@ class _CourseListWidgetState extends State<CourseListWidget> {
           Expanded(
             child: ListView(
               children: [
+                // Seção de Cursos Favoritos (apenas se houver favoritos)
+                if (widget.controller.favoriteCourses.isNotEmpty) ...[
+                  _buildCategorySection(
+                    title: 'Seus Cursos Favoritos',
+                    courses: widget.controller.favoriteCourses,
+                    icon: Icons.favorite,
+                    gradient: const [Color(0xFFFF6B6B), Color(0xFFEE5A52)],
+                    count: widget.controller.favoriteCourses.length,
+                  ),
+                  const SizedBox(height: 32),
+                ],
+
                 _buildCategorySection(
                   title: 'Fiscais',
                   courses: widget.controller.fiscalCourses,
@@ -80,12 +108,7 @@ class _CourseListWidgetState extends State<CourseListWidget> {
     required int count,
   }) {
     if (courses.isEmpty) {
-      return FlowStateWidget(
-        title: 'Nenhum curso em $title',
-        description: 'Não há cursos disponíveis nesta categoria no momento.',
-        hideButton: true,
-        flowState: FlowState.empty,
-      );
+      return const SizedBox.shrink(); // Não mostra seção vazia
     }
 
     return Column(
@@ -188,7 +211,9 @@ class _CourseListWidgetState extends State<CourseListWidget> {
                 return CourseItemWidget(
                   course: course,
                   onCourseTap: (courseId) {
-                    Navigator.of(context).pushNamed('/course-detail', arguments: courseId);
+                    Navigator.of(
+                      context,
+                    ).pushNamed(AppRoutesManager.courseDetail, arguments: courseId);
                   },
                 );
               }).toList(),

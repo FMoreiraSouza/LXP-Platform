@@ -4,7 +4,7 @@ class AppLoadWidget extends StatelessWidget {
   final String? label;
   final Color? textColor;
 
-  const AppLoadWidget({super.key, this.label, this.textColor = Colors.black54});
+  const AppLoadWidget({super.key, this.label, this.textColor = Colors.white});
 
   @override
   Widget build(BuildContext context) {

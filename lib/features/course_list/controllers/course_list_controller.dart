@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿// Atualize o CourseListController existente
+import 'package:flutter/material.dart';
 import 'package:lxp_platform/core/constants/page_states.dart';
 import 'package:lxp_platform/core/network/failure.dart';
 import 'package:lxp_platform/data/dto/request/get_courses_request_dto.dart';
@@ -18,20 +19,25 @@ class CourseListController extends ChangeNotifier {
   List<CourseModel> _fiscalCourses = [];
   List<CourseModel> _contabilCourses = [];
   List<CourseModel> _trabalhistaCourses = [];
+  List<CourseModel> _favoriteCourses = [];
 
   int _state = PageStates.loadingState;
   bool _isLoading = false;
   String? _error;
 
+  static const String _favoriteCoursesKey = 'favorite_courses';
+
   List<CourseModel> get fiscalCourses => _fiscalCourses;
   List<CourseModel> get contabilCourses => _contabilCourses;
   List<CourseModel> get trabalhistaCourses => _trabalhistaCourses;
+  List<CourseModel> get favoriteCourses => _favoriteCourses;
   int get state => _state;
   bool get isLoading => _isLoading;
   String? get error => _error;
 
   void initPage() {
     loadAllCourses();
+    _loadFavoriteCourses();
   }
 
   Future<void> loadAllCourses() async {
@@ -86,6 +92,21 @@ class CourseListController extends ChangeNotifier {
         }
       },
     );
+  }
+
+  void _loadFavoriteCourses() {
+    final favoriteIds = sharedPreferences.getStringList(_favoriteCoursesKey) ?? [];
+
+    // Combinar todas as listas de cursos para encontrar os favoritos
+    final allCourses = [..._fiscalCourses, ..._contabilCourses, ..._trabalhistaCourses];
+
+    _favoriteCourses = allCourses.where((course) => favoriteIds.contains(course.id)).toList();
+    notifyListeners();
+  }
+
+  void updateFavoriteCourses() {
+    _loadFavoriteCourses();
+    notifyListeners();
   }
 
   void _checkErrorState(Failure failure) {

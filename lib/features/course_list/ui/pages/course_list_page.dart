@@ -61,7 +61,7 @@ class _CourseListPageState extends State<CourseListPage> {
           ),
         );
       case PageStates.loadingState:
-        return const AppLoadWidget(label: 'Carregando cursos...', textColor: Colors.black54);
+        return const AppLoadWidget(label: 'Carregando cursos');
       case PageStates.noConnection:
         return Center(
           child: SingleChildScrollView(

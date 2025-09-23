@@ -1,10 +1,12 @@
-﻿import 'package:lxp_platform/core/di/service_locator.dart';
+﻿// lib/core/di/dependency_manager.dart
+import 'package:lxp_platform/core/di/service_locator.dart';
 
 class DependencyManager {
   static T registerSingleton<T extends Object>(T instance) {
-    if (!sl.isRegistered<T>()) {
-      sl.registerSingleton<T>(instance);
+    if (sl.isRegistered<T>()) {
+      sl.unregister<T>();
     }
+    sl.registerSingleton<T>(instance);
     return sl<T>();
   }
 
@@ -13,7 +15,9 @@ class DependencyManager {
   }
 
   static void unregister<T extends Object>() {
-    sl.unregister<T>();
+    if (sl.isRegistered<T>()) {
+      sl.unregister<T>();
+    }
   }
 
   static bool isRegistered<T extends Object>() {

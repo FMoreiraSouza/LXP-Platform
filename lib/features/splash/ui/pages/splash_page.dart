@@ -1,5 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:lxp_platform/gen/assets.gen.dart';
+import 'package:lxp_platform/routes/app_routes_manager.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -19,7 +20,7 @@ class _SplashPageState extends State<SplashPage> {
     await Future.delayed(const Duration(seconds: 2));
 
     if (mounted) {
-      Navigator.of(context).pushReplacementNamed('/course-list');
+      Navigator.of(context).pushReplacementNamed(AppRoutesManager.courseList);
     }
   }
 
