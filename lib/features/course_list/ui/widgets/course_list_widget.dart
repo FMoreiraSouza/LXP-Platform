@@ -213,7 +213,7 @@ class _CourseListWidgetState extends State<CourseListWidget> {
                   onCourseTap: (courseId) {
                     Navigator.of(
                       context,
-                    ).pushNamed(AppRoutesManager.courseDetail, arguments: courseId);
+                    ).pushNamed(AppRoutesManager.courseDetails, arguments: courseId);
                   },
                 );
               }).toList(),

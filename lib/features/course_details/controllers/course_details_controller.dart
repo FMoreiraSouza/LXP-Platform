@@ -1,29 +1,29 @@
 ﻿// lib/features/course_detail/controllers/course_detail_controller.dart
 import 'package:flutter/material.dart';
 import 'package:lxp_platform/core/network/failure.dart';
-import 'package:lxp_platform/data/models/course_model.dart';
-import 'package:lxp_platform/features/course_detail/usecases/get_course_details_usecase.dart';
+import 'package:lxp_platform/data/models/course_details_model.dart';
+import 'package:lxp_platform/features/course_details/usecases/get_course_details_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CourseDetailController extends ChangeNotifier {
+class CourseDetailsController extends ChangeNotifier {
   final GetCourseDetailsUseCase getCourseDetailsUseCase;
   final SharedPreferences sharedPreferences;
   final String courseId;
 
   static const String _favoriteCoursesKey = 'favorite_courses';
 
-  CourseDetailController({
+  CourseDetailsController({
     required this.getCourseDetailsUseCase,
     required this.sharedPreferences,
     required this.courseId,
   });
 
-  CourseModel? _course;
+  CourseDetailsModel? _courseDetails;
   bool _isLoading = false;
   bool _isFavorite = false;
   String? _error;
 
-  CourseModel? get course => _course;
+  CourseDetailsModel? get courseDetails => _courseDetails;
   bool get isLoading => _isLoading;
   bool get isFavorite => _isFavorite;
   String? get error => _error;
@@ -39,7 +39,7 @@ class CourseDetailController extends ChangeNotifier {
       result.process(
         onError: (error) => throw error,
         onSuccess: (course) {
-          _course = course;
+          _courseDetails = course;
           _loadFavoriteStatus();
         },
       );

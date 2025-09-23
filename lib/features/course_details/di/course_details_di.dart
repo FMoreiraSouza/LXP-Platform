@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:lxp_platform/core/di/dependency_manager.dart';
 import 'package:lxp_platform/core/di/page_dependency.dart';
 import 'package:lxp_platform/data/repository/implementation/course_repository.dart';
-import 'package:lxp_platform/features/course_detail/controllers/course_detail_controller.dart';
-import 'package:lxp_platform/features/course_detail/usecases/get_course_details_usecase.dart';
-import 'package:lxp_platform/features/course_detail/ui/pages/course_detail_page.dart';
+import 'package:lxp_platform/features/course_details/controllers/course_details_controller.dart';
+import 'package:lxp_platform/features/course_details/usecases/get_course_details_usecase.dart';
+import 'package:lxp_platform/features/course_details/ui/pages/course_details_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CourseDetailDI implements PageDependency {
+class CourseDetailsDI implements PageDependency {
   final String courseId;
 
-  CourseDetailDI({required this.courseId});
+  CourseDetailsDI({required this.courseId});
 
   @override
   void init() {
@@ -22,7 +22,7 @@ class CourseDetailDI implements PageDependency {
 
     DependencyManager.registerSingleton(getCourseDetailsUseCase);
     DependencyManager.registerSingleton(
-      CourseDetailController(
+      CourseDetailsController(
         getCourseDetailsUseCase: getCourseDetailsUseCase,
         sharedPreferences: sharedPreferences,
         courseId: courseId,
@@ -32,6 +32,6 @@ class CourseDetailDI implements PageDependency {
 
   @override
   StatefulWidget getPage() {
-    return CourseDetailPage(controller: DependencyManager.get<CourseDetailController>());
+    return CourseDetailsPage(controller: DependencyManager.get<CourseDetailsController>());
   }
 }

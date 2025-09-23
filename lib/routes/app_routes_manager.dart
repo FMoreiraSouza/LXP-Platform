@@ -1,12 +1,12 @@
 ﻿import 'package:flutter/material.dart';
-import 'package:lxp_platform/features/course_detail/di/course_detail_di.dart';
+import 'package:lxp_platform/features/course_details/di/course_details_di.dart';
 import 'package:lxp_platform/features/course_list/di/course_list_di.dart';
 import 'package:lxp_platform/features/splash/di/splash_di.dart';
 
 class AppRoutesManager {
   static const String splash = '/';
   static const String courseList = '/course-list';
-  static const String courseDetail = '/course-detail';
+  static const String courseDetails = '/course-details';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -20,9 +20,9 @@ class AppRoutesManager {
         di.init();
         return MaterialPageRoute(builder: (_) => di.getPage());
 
-      case courseDetail:
+      case courseDetails:
         final courseId = settings.arguments as String;
-        final di = CourseDetailDI(courseId: courseId);
+        final di = CourseDetailsDI(courseId: courseId);
         di.init();
         return MaterialPageRoute(builder: (_) => di.getPage());
 

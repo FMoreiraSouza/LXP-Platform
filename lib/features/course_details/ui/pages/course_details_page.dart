@@ -1,19 +1,19 @@
 ﻿// lib/features/course_detail/ui/pages/course_detail_page.dart
 import 'package:flutter/material.dart';
 import 'package:lxp_platform/core/ui/states/app_load_widget.dart';
-import 'package:lxp_platform/data/models/course_model.dart';
-import 'package:lxp_platform/features/course_detail/controllers/course_detail_controller.dart';
+import 'package:lxp_platform/data/models/course_details_model.dart';
+import 'package:lxp_platform/features/course_details/controllers/course_details_controller.dart';
 
-class CourseDetailPage extends StatefulWidget {
-  final CourseDetailController controller;
+class CourseDetailsPage extends StatefulWidget {
+  final CourseDetailsController controller;
 
-  const CourseDetailPage({super.key, required this.controller});
+  const CourseDetailsPage({super.key, required this.controller});
 
   @override
-  State<CourseDetailPage> createState() => _CourseDetailPageState();
+  State<CourseDetailsPage> createState() => _CourseDetailsPageState();
 }
 
-class _CourseDetailPageState extends State<CourseDetailPage> {
+class _CourseDetailsPageState extends State<CourseDetailsPage> {
   @override
   void initState() {
     super.initState();
@@ -28,7 +28,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
         animation: widget.controller,
         builder: (context, child) {
           if (widget.controller.isLoading) {
-            return const AppLoadWidget(label: 'Carregando curso...');
+            return const AppLoadWidget(label: 'Carregando curso');
           }
 
           if (widget.controller.error != null) {
@@ -61,8 +61,8 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
             );
           }
 
-          final course = widget.controller.course;
-          if (course == null) {
+          final courseDetails = widget.controller.courseDetails;
+          if (courseDetails == null) {
             return const Center(child: Text('Curso não encontrado'));
           }
 
@@ -71,7 +71,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
               SliverAppBar(
                 expandedHeight: 250.0,
                 pinned: true,
-                flexibleSpace: FlexibleSpaceBar(background: _buildBanner(course)),
+                flexibleSpace: FlexibleSpaceBar(background: _buildBanner(courseDetails)),
                 actions: [
                   IconButton(
                     icon: Icon(
@@ -88,8 +88,9 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // TÍTULO SEMPRE VISÍVEL (igual ao CourseListWidget)
                       Text(
-                        course.title,
+                        courseDetails.title,
                         style: Theme.of(context).textTheme.displayMedium?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -97,9 +98,9 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                       ),
                       const SizedBox(height: 16),
 
-                      if (course.subtitle?.isNotEmpty == true) ...[
+                      if (courseDetails.subtitle?.isNotEmpty == true) ...[
                         Text(
-                          course.subtitle!,
+                          courseDetails.subtitle!,
                           style: Theme.of(
                             context,
                           ).textTheme.headlineMedium?.copyWith(color: Colors.grey[300]),
@@ -107,7 +108,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                         const SizedBox(height: 24),
                       ],
 
-                      if (course.summary?.isNotEmpty == true) ...[
+                      if (courseDetails.summary?.isNotEmpty == true) ...[
                         Text(
                           'Resumo do Curso',
                           style: Theme.of(
@@ -116,7 +117,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          course.summary!,
+                          courseDetails.summary!,
                           style: Theme.of(
                             context,
                           ).textTheme.bodyLarge?.copyWith(color: Colors.grey[300], height: 1.5),
@@ -124,7 +125,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                         const SizedBox(height: 24),
                       ],
 
-                      if (course.objective?.isNotEmpty == true) ...[
+                      if (courseDetails.objective?.isNotEmpty == true) ...[
                         Text(
                           'Objetivo',
                           style: Theme.of(
@@ -133,7 +134,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          course.objective!,
+                          courseDetails.objective!,
                           style: Theme.of(
                             context,
                           ).textTheme.bodyLarge?.copyWith(color: Colors.grey[300], height: 1.5),
@@ -150,7 +151,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
     );
   }
 
-  Widget _buildBanner(CourseModel course) {
+  Widget _buildBanner(CourseDetailsModel course) {
     if (course.banner != null && course.banner!.isNotEmpty) {
       return Image.network(
         course.banner!,
@@ -158,7 +159,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
         height: double.infinity,
         fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
-          return _buildPlaceholderBanner();
+          return _buildPlaceholderBanner(course); // Passar o curso para mostrar título
         },
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
@@ -166,22 +167,44 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
         },
       );
     } else {
-      return _buildPlaceholderBanner();
+      return _buildPlaceholderBanner(course); // Passar o curso para mostrar título
     }
   }
 
-  Widget _buildPlaceholderBanner() {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [const Color(0xFF4A90E2).withValues(alpha: 0.8), const Color(0xFF121212)],
+  Widget _buildPlaceholderBanner(CourseDetailsModel course) {
+    return Stack(
+      children: [
+        Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [const Color(0xFF4A90E2).withValues(alpha: 0.8), const Color(0xFF121212)],
+            ),
+          ),
+          child: const Center(child: Icon(Icons.school, size: 80, color: Colors.white)),
         ),
-      ),
-      child: const Center(child: Icon(Icons.school, size: 80, color: Colors.white)),
+        // TÍTULO SOBREPOSTO NO PLACEHOLDER (igual ao CourseItemWidget)
+        if (course.banner == null || course.banner!.isEmpty)
+          Positioned(
+            bottom: 20,
+            left: 16,
+            right: 16,
+            child: Text(
+              course.title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                shadows: [Shadow(blurRadius: 8.0, color: Colors.black87, offset: Offset(2.0, 2.0))],
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+      ],
     );
   }
 

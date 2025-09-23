@@ -2,6 +2,7 @@
 import 'package:lxp_platform/core/network/failure.dart';
 import 'package:lxp_platform/data/datasource/i_course_datasource.dart';
 import 'package:lxp_platform/data/dto/request/get_courses_request_dto.dart';
+import 'package:lxp_platform/data/dto/response/course_details_response_dto.dart';
 import 'package:lxp_platform/data/dto/response/course_response_dto.dart';
 
 class CourseDataSource implements ICourseDataSource {
@@ -32,12 +33,12 @@ class CourseDataSource implements ICourseDataSource {
   }
 
   @override
-  Future<CourseResponseDTO> getCourseDetails(String courseId) async {
+  Future<CourseDetailsResponseDTO> getCourseDetails(String courseId) async {
     try {
       final response = await dio.get('/event/$courseId');
 
       if (response.statusCode == 200) {
-        return CourseResponseDTO.fromMap(response.data);
+        return CourseDetailsResponseDTO.fromMap(response.data);
       } else {
         throw ServerException('Failed to load course details');
       }

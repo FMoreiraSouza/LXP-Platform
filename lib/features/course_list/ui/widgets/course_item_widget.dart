@@ -11,6 +11,7 @@ class CourseItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.7,
+      margin: const EdgeInsets.only(right: 12),
       child: Card(
         elevation: 8,
         shadowColor: Colors.black45,
@@ -26,7 +27,10 @@ class CourseItemWidget extends StatelessWidget {
             aspectRatio: 16 / 9,
             child: Stack(
               children: [
+                // Banner background
                 _buildBannerBackground(context),
+
+                // Gradient overlay
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
@@ -37,7 +41,9 @@ class CourseItemWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (_hasNoBanner()) ...[
+
+                // Title (só aparece se não tiver banner)
+                if (_hasNoBanner())
                   Positioned(
                     bottom: 12,
                     left: 16,
@@ -56,7 +62,6 @@ class CourseItemWidget extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                ],
               ],
             ),
           ),
@@ -105,12 +110,7 @@ class CourseItemWidget extends StatelessWidget {
           colors: [Theme.of(context).colorScheme.primary.withValues(alpha: 0.1), Colors.black54],
         ),
       ),
-      child: const Positioned(
-        top: 32,
-        left: 0,
-        right: 0,
-        child: Center(child: Icon(Icons.school, size: 48, color: Color(0xFF4A90E2))),
-      ),
+      child: const Center(child: Icon(Icons.school, size: 48, color: Color(0xFF4A90E2))),
     );
   }
 
