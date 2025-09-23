@@ -3,7 +3,7 @@ import 'package:lxp_platform/features/course_detail/di/course_detail_di.dart';
 import 'package:lxp_platform/features/course_list/di/course_list_di.dart';
 import 'package:lxp_platform/features/splash/di/splash_di.dart';
 
-class AppRoutes {
+class AppRoutesManager {
   static const String splash = '/';
   static const String courseList = '/course-list';
   static const String courseDetail = '/course-detail';

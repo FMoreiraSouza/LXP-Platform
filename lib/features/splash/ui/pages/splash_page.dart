@@ -1,8 +1,8 @@
-﻿// lib/features/splash/ui/pages/splash_page.dart
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:lxp_platform/gen/assets.gen.dart';
 
 class SplashPage extends StatefulWidget {
-  const SplashPage({super.key}); // Removido o parâmetro controller
+  const SplashPage({super.key});
 
   @override
   State<SplashPage> createState() => _SplashPageState();
@@ -27,31 +27,7 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FlutterLogo(size: 100, style: FlutterLogoStyle.stacked),
-            const SizedBox(height: 24),
-            const Text(
-              'CEFIS LXP',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
-                letterSpacing: 1.2,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Plataforma de Aprendizado',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 32),
-            const CircularProgressIndicator(color: Colors.blue, strokeWidth: 2),
-          ],
-        ),
-      ),
+      body: Center(child: Assets.images.logo.image(width: 200, height: 200, fit: BoxFit.contain)),
     );
   }
 }

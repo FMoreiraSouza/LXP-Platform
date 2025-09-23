@@ -36,15 +36,12 @@ class _CourseListPageState extends State<CourseListPage> {
       appBar: AppBar(title: const Text('Cursos Disponíveis'), centerTitle: true, elevation: 1),
       body: Stack(
         children: [
-          // Conteúdo principal baseado no estado
           AnimatedBuilder(
             animation: widget.controller,
             builder: (context, child) {
               return _getWidget(widget.controller.state);
             },
           ),
-
-          // Loading overlay
           AnimatedBuilder(
             animation: widget.controller,
             builder: (context, child) {
@@ -60,22 +57,19 @@ class _CourseListPageState extends State<CourseListPage> {
     switch (state) {
       case PageStates.successState:
         return CourseListWidget(controller: widget.controller);
-
       case PageStates.emptyState:
         return FlowStateWidget(
           title: 'Nenhum curso disponível',
-          description: 'Não encontramos cursos nesta categoria no momento.',
+          description: 'Não encontramos cursos nas categorias fiscais, contábeis e trabalhistas.',
           hideButton: true,
           flowState: FlowState.empty,
         );
-
       case PageStates.loadingState:
         return const AppLoadWidget(
           label: 'Carregando cursos...',
           bgColor: Colors.transparent,
           textColor: Colors.black54,
         );
-
       case PageStates.noConnection:
         return FlowStateWidget(
           function: () => widget.controller.loadAllCourses(),
@@ -83,7 +77,6 @@ class _CourseListPageState extends State<CourseListPage> {
           description: "Verifique sua conexão com a internet e tente novamente.",
           flowState: FlowState.noConnection,
         );
-
       case PageStates.errorState:
       default:
         return FlowStateWidget(

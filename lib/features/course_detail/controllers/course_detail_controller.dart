@@ -1,6 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:lxp_platform/core/network/api_service.dart';
-import 'package:lxp_platform/data/course/models/course_model.dart';
+import 'package:lxp_platform/data/models/course_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CourseDetailController extends ChangeNotifier {

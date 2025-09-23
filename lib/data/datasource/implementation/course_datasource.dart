@@ -1,8 +1,8 @@
 ﻿import 'package:dio/dio.dart';
 import 'package:lxp_platform/core/network/failure.dart';
-import 'package:lxp_platform/data/course/datasource/i_course_datasource.dart';
-import 'package:lxp_platform/data/course/dto/request/get_courses_request_dto.dart';
-import 'package:lxp_platform/data/course/dto/response/course_response_dto.dart';
+import 'package:lxp_platform/data/datasource/i_course_datasource.dart';
+import 'package:lxp_platform/data/dto/request/get_courses_request_dto.dart';
+import 'package:lxp_platform/data/dto/response/course_response_dto.dart';
 
 class CourseDataSource implements ICourseDataSource {
   final Dio dio;

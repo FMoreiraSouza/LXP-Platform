@@ -1,25 +1,16 @@
-﻿// lib/features/course_list/ui/widgets/course_item_widget.dart
-import 'package:flutter/material.dart';
-import 'package:lxp_platform/data/course/models/course_model.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:lxp_platform/data/models/course_model.dart';
 
 class CourseItemWidget extends StatelessWidget {
   final CourseModel course;
   final Function(String) onCourseTap;
-  final Function(String) onToggleFavorite;
-  final bool isFavorite;
 
-  const CourseItemWidget({
-    super.key,
-    required this.course,
-    required this.onCourseTap,
-    required this.onToggleFavorite,
-    required this.isFavorite,
-  });
+  const CourseItemWidget({super.key, required this.course, required this.onCourseTap});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 160, // Largura fixa para cada item do carrossel
+      width: 160,
       margin: const EdgeInsets.only(right: 12),
       child: Card(
         elevation: 2,
@@ -29,7 +20,6 @@ class CourseItemWidget extends StatelessWidget {
           onTap: () => onCourseTap(course.id),
           child: Stack(
             children: [
-              // Banner do curso (se existir)
               if (course.banner != null)
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
@@ -56,8 +46,6 @@ class CourseItemWidget extends StatelessWidget {
                   ),
                   child: const Icon(Icons.school, size: 40, color: Colors.blue),
                 ),
-
-              // Overlay escuro no banner
               if (course.banner != null)
                 Container(
                   height: 100,
@@ -70,8 +58,6 @@ class CourseItemWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-
-              // Título do curso sobreposto ao banner
               Positioned(
                 bottom: 8,
                 left: 8,
@@ -85,19 +71,6 @@ class CourseItemWidget extends StatelessWidget {
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                ),
-              ),
-
-              // Botão de favorito
-              Positioned(
-                top: 8,
-                right: 8,
-                child: IconButton(
-                  icon: Icon(
-                    isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: isFavorite ? Colors.red : Colors.white,
-                  ),
-                  onPressed: () => onToggleFavorite(course.id),
                 ),
               ),
             ],

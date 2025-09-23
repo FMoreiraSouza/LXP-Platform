@@ -1,9 +1,8 @@
-// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lxp_platform/core/di/service_locator.dart';
 import 'package:lxp_platform/core/theme/app_theme.dart';
-import 'package:lxp_platform/routes/app_routes.dart';
+import 'package:lxp_platform/routes/app_routes_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,7 +12,6 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  // Configura injeção de dependência e aguarda conclusão
   await setupServiceLocator();
 
   runApp(const LXPPlatform());
@@ -25,11 +23,11 @@ class LXPPlatform extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'CEFIS LXP',
+      title: 'LXP Platform',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      initialRoute: AppRoutes.splash,
-      onGenerateRoute: AppRoutes.generateRoute,
+      initialRoute: AppRoutesManager.splash,
+      onGenerateRoute: AppRoutesManager.generateRoute,
     );
   }
 }

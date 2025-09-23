@@ -1,4 +1,4 @@
-﻿import 'package:lxp_platform/data/course/dto/response/course_response_dto.dart';
+﻿import 'package:lxp_platform/data/dto/response/course_response_dto.dart';
 
 class CourseModel {
   final String id;
