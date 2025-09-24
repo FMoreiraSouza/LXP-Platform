@@ -9,7 +9,9 @@ void main() async {
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
+    DeviceOrientation.landscapeRight,
     DeviceOrientation.portraitDown,
+    DeviceOrientation.landscapeLeft,
   ]);
 
   SystemChrome.setSystemUIOverlayStyle(

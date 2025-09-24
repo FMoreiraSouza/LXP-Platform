@@ -1,5 +1,7 @@
 ﻿import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:lxp_platform/core/constants/responsivity_constants.dart';
+import 'package:lxp_platform/core/utils/responsivity_utils.dart';
 import 'package:lxp_platform/data/models/course_model.dart';
 
 class CourseItemWidget extends StatelessWidget {
@@ -10,19 +12,24 @@ class CourseItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsivity = ResponsivityUtils(context);
     return Container(
-      width: MediaQuery.of(context).size.width * 0.7,
-      margin: const EdgeInsets.only(right: 12),
+      width: responsivity.cardWidth(),
+      margin: EdgeInsets.only(right: responsivity.smallSpacing()),
       child: Card(
         elevation: 8,
         shadowColor: Colors.black45,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: responsivity.responsiveBorderRadius(
+            ResponsivityConstants.defaultSpacingPercentage,
+          ),
           side: BorderSide(color: Colors.grey[800]!, width: 0.5),
         ),
         color: Theme.of(context).cardColor,
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: responsivity.responsiveBorderRadius(
+            ResponsivityConstants.defaultSpacingPercentage,
+          ),
           onTap: () => onCourseTap(course.id),
           child: AspectRatio(
             aspectRatio: 16 / 9,
@@ -31,7 +38,9 @@ class CourseItemWidget extends StatelessWidget {
                 _buildBannerBackground(context),
                 Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: responsivity.responsiveBorderRadius(
+                      ResponsivityConstants.defaultSpacingPercentage,
+                    ),
                     gradient: const LinearGradient(
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
@@ -41,16 +50,16 @@ class CourseItemWidget extends StatelessWidget {
                 ),
                 if (_hasNoBanner())
                   Positioned(
-                    bottom: 12,
-                    left: 16,
-                    right: 16,
+                    bottom: responsivity.smallSpacing(),
+                    left: responsivity.defaultSpacing(),
+                    right: responsivity.defaultSpacing(),
                     child: Text(
                       course.title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: responsivity.textSize(),
                         fontWeight: FontWeight.bold,
-                        shadows: [
+                        shadows: const [
                           Shadow(blurRadius: 8.0, color: Colors.black87, offset: Offset(2.0, 2.0)),
                         ],
                       ),
@@ -71,9 +80,12 @@ class CourseItemWidget extends StatelessWidget {
   }
 
   Widget _buildBannerBackground(BuildContext context) {
+    final responsivity = ResponsivityUtils(context);
     if (course.banner != null && course.banner!.isNotEmpty) {
       return ClipRRect(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: responsivity.responsiveBorderRadius(
+          ResponsivityConstants.defaultSpacingPercentage,
+        ),
         child: CachedNetworkImage(
           imageUrl: course.banner!,
           width: double.infinity,
@@ -89,11 +101,14 @@ class CourseItemWidget extends StatelessWidget {
   }
 
   Widget _buildPlaceholder(BuildContext context) {
+    final responsivity = ResponsivityUtils(context);
     return Container(
       width: double.infinity,
       height: double.infinity,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: responsivity.responsiveBorderRadius(
+          ResponsivityConstants.defaultSpacingPercentage,
+        ),
         color: Theme.of(context).cardColor,
         gradient: LinearGradient(
           begin: Alignment.topCenter,
@@ -101,7 +116,13 @@ class CourseItemWidget extends StatelessWidget {
           colors: [Theme.of(context).colorScheme.primary.withOpacity(0.1), Colors.black54],
         ),
       ),
-      child: const Center(child: Icon(Icons.school, size: 48, color: Color(0xFF4A90E2))),
+      child: Center(
+        child: Icon(
+          Icons.school,
+          size: responsivity.largeIconSize(),
+          color: const Color(0xFF4A90E2),
+        ),
+      ),
     );
   }
 

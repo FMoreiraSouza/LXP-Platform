@@ -21,8 +21,6 @@ class CourseRepository implements ICourseRepository {
       return ResultData.success(courses);
     } on Failure catch (e) {
       return ResultData.error(e);
-    } catch (e) {
-      return ResultData.error(Failure(e.toString()));
     }
   }
 
@@ -34,8 +32,6 @@ class CourseRepository implements ICourseRepository {
       return ResultData.success(courseDetails);
     } on Failure catch (e) {
       return ResultData.error(e);
-    } catch (e) {
-      return ResultData.error(Failure(e.toString()));
     }
   }
 }

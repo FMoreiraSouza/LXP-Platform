@@ -1,4 +1,4 @@
-﻿// lib/core/di/service_locator.dart
+﻿import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lxp_platform/core/network/api_client.dart';
@@ -9,6 +9,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 final GetIt sl = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
+  // Connectivity
+  sl.registerLazySingleton<Connectivity>(() => Connectivity());
+
   // Dio
   sl.registerLazySingleton(
     () => Dio()
@@ -26,7 +29,9 @@ Future<void> setupServiceLocator() async {
   sl.registerSingleton<SharedPreferences>(sharedPreferences);
 
   // DataSource e Repository
-  sl.registerLazySingleton<CourseDataSource>(() => CourseDataSource(dio: sl<Dio>()));
+  sl.registerLazySingleton<CourseDataSource>(
+    () => CourseDataSource(dio: sl<Dio>(), connectivity: sl<Connectivity>()),
+  );
 
   sl.registerLazySingleton<CourseRepository>(
     () => CourseRepository(dataSource: sl<CourseDataSource>()),

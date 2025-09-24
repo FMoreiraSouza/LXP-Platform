@@ -1,5 +1,7 @@
 ﻿import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:lxp_platform/core/constants/responsivity_constants.dart';
+import 'package:lxp_platform/core/utils/responsivity_utils.dart';
 import 'package:lxp_platform/data/models/course_details_model.dart';
 import 'package:lxp_platform/features/course_details/controllers/course_details_controller.dart';
 import 'package:lxp_platform/features/course_list/controllers/course_list_controller.dart';
@@ -18,19 +20,27 @@ class CourseContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsivity = ResponsivityUtils(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Cabeçalho com botão de voltar e banner
         Container(
-          height: MediaQuery.of(context).padding.top + 60,
-          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 16, right: 16),
+          height:
+              responsivity.statusBarHeight +
+              responsivity.buttonSize() +
+              responsivity.smallSpacing(),
+          padding: EdgeInsets.only(
+            top: responsivity.statusBarHeight,
+            left: responsivity.defaultSpacing(),
+            right: responsivity.defaultSpacing(),
+          ),
           child: Container(
-            width: 40,
-            height: 40,
+            width: responsivity.buttonSize(),
+            height: responsivity.buttonSize(),
             decoration: BoxDecoration(color: Colors.black.withOpacity(0.6), shape: BoxShape.circle),
             child: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
+              icon: Icon(Icons.arrow_back, color: Colors.white, size: responsivity.smallIconSize()),
               padding: EdgeInsets.zero,
               onPressed: () => Navigator.of(context).pop(),
             ),
@@ -40,7 +50,7 @@ class CourseContentWidget extends StatelessWidget {
           aspectRatio: 16 / 9,
           child: Stack(
             children: [
-              _buildBannerBackground(),
+              _buildBannerBackground(context), // Pass context here
               Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
@@ -52,16 +62,16 @@ class CourseContentWidget extends StatelessWidget {
               ),
               if (_hasNoBanner())
                 Positioned(
-                  bottom: 20,
-                  left: 16,
-                  right: 16,
+                  bottom: responsivity.defaultSpacing(),
+                  left: responsivity.defaultSpacing(),
+                  right: responsivity.defaultSpacing(),
                   child: Text(
                     courseDetails.title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 18,
+                      fontSize: responsivity.largeTextSize(),
                       fontWeight: FontWeight.bold,
-                      shadows: [
+                      shadows: const [
                         Shadow(blurRadius: 8.0, color: Colors.black87, offset: Offset(2.0, 2.0)),
                       ],
                     ),
@@ -75,7 +85,9 @@ class CourseContentWidget extends StatelessWidget {
         ),
         // Conteúdo principal
         Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: responsivity.responsiveAllPadding(
+            ResponsivityConstants.defaultSpacingPercentage,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -92,8 +104,8 @@ class CourseContentWidget extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      width: 40,
-                      height: 40,
+                      width: responsivity.buttonSize(),
+                      height: responsivity.buttonSize(),
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.6),
                         shape: BoxShape.circle,
@@ -102,7 +114,7 @@ class CourseContentWidget extends StatelessWidget {
                         icon: Icon(
                           controller.isFavorite ? Icons.favorite : Icons.favorite_border,
                           color: controller.isFavorite ? Colors.red : Colors.white,
-                          size: 20,
+                          size: responsivity.smallIconSize(),
                         ),
                         padding: EdgeInsets.zero,
                         onPressed: () async {
@@ -113,37 +125,37 @@ class CourseContentWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: responsivity.largeSpacing()),
               ],
               if (courseDetails.summary?.isNotEmpty == true) ...[
                 Text(
                   'Resumo do Curso',
                   style: Theme.of(context).textTheme.headlineLarge?.copyWith(color: Colors.white),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: responsivity.smallSpacing()),
                 Text(
                   courseDetails.summary!,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Colors.grey[300],
                     height: 1.5,
-                    fontSize: 14,
+                    fontSize: responsivity.textSize(),
                   ),
                   textAlign: TextAlign.justify,
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: responsivity.largeSpacing()),
               ],
               if (courseDetails.objective?.isNotEmpty == true) ...[
                 Text(
                   'Objetivo',
                   style: Theme.of(context).textTheme.headlineLarge?.copyWith(color: Colors.white),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: responsivity.smallSpacing()),
                 Text(
                   courseDetails.objective!,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Colors.grey[300],
                     height: 1.5,
-                    fontSize: 14,
+                    fontSize: responsivity.textSize(),
                   ),
                   textAlign: TextAlign.justify,
                 ),
@@ -155,23 +167,28 @@ class CourseContentWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildBannerBackground() {
+  Widget _buildBannerBackground(BuildContext context) {
+    final responsivity = ResponsivityUtils(context);
     if (courseDetails.banner != null && courseDetails.banner!.isNotEmpty) {
       return ClipRRect(
+        borderRadius: responsivity.responsiveBorderRadius(
+          ResponsivityConstants.defaultSpacingPercentage,
+        ),
         child: CachedNetworkImage(
           imageUrl: courseDetails.banner!,
           width: double.infinity,
           height: double.infinity,
           fit: BoxFit.cover,
-          placeholder: (context, url) => _buildPlaceholder(isLoading: true),
-          errorWidget: (context, url, error) => _buildPlaceholder(isLoading: false),
+          placeholder: (context, url) => _buildPlaceholder(context, isLoading: true),
+          errorWidget: (context, url, error) => _buildPlaceholder(context, isLoading: false),
         ),
       );
     }
-    return _buildPlaceholder(isLoading: false);
+    return _buildPlaceholder(context, isLoading: false);
   }
 
-  Widget _buildPlaceholder({required bool isLoading}) {
+  Widget _buildPlaceholder(BuildContext context, {required bool isLoading}) {
+    final responsivity = ResponsivityUtils(context);
     if (isLoading) {
       return Container(
         width: double.infinity,
@@ -189,13 +206,18 @@ class CourseContentWidget extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       decoration: BoxDecoration(
+        borderRadius: responsivity.responsiveBorderRadius(
+          ResponsivityConstants.defaultSpacingPercentage,
+        ),
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [const Color(0xFF4A90E2).withOpacity(0.8), const Color(0xFF121212)],
         ),
       ),
-      child: const Center(child: Icon(Icons.school, size: 80, color: Colors.white)),
+      child: Center(
+        child: Icon(Icons.school, size: responsivity.extraLargeIconSize(), color: Colors.white),
+      ),
     );
   }
 

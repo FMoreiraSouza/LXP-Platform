@@ -1,5 +1,6 @@
-﻿// Atualize o CourseListWidget existente
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:lxp_platform/core/constants/responsivity_constants.dart';
+import 'package:lxp_platform/core/utils/responsivity_utils.dart';
 import 'package:lxp_platform/data/models/course_model.dart';
 import 'package:lxp_platform/features/course_list/controllers/course_list_controller.dart';
 import 'package:lxp_platform/features/course_list/ui/widgets/course_item_widget.dart';
@@ -33,26 +34,31 @@ class _CourseListWidgetState extends State<CourseListWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final responsivity = ResponsivityUtils(context);
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: responsivity.responsiveAllPadding(ResponsivityConstants.defaultSpacingPercentage),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
+          Text(
             'Explore Cursos',
             style: TextStyle(
-              fontSize: 28,
+              fontSize: responsivity.extraLargeTextSize(),
               fontWeight: FontWeight.bold,
               color: Colors.white,
               letterSpacing: -0.5,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: responsivity.smallSpacing()),
           Text(
             'Descubra conteúdos incríveis para sua formação',
-            style: TextStyle(fontSize: 16, color: Colors.grey[400], fontWeight: FontWeight.w300),
+            style: TextStyle(
+              fontSize: responsivity.mediumTextSize(),
+              color: Colors.grey[400],
+              fontWeight: FontWeight.w300,
+            ),
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: responsivity.largeSpacing()),
 
           Expanded(
             child: ListView(
@@ -66,7 +72,7 @@ class _CourseListWidgetState extends State<CourseListWidget> {
                     gradient: const [Color(0xFFFF6B6B), Color(0xFFEE5A52)],
                     count: widget.controller.favoriteCourses.length,
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: responsivity.largeSpacing()),
                 ],
 
                 _buildCategorySection(
@@ -76,7 +82,7 @@ class _CourseListWidgetState extends State<CourseListWidget> {
                   gradient: const [Color(0xFF4A90E2), Color(0xFF357ABD)],
                   count: widget.controller.fiscalCourses.length,
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: responsivity.largeSpacing()),
                 _buildCategorySection(
                   title: 'Contábeis',
                   courses: widget.controller.contabilCourses,
@@ -84,7 +90,7 @@ class _CourseListWidgetState extends State<CourseListWidget> {
                   gradient: const [Color(0xFF7B68EE), Color(0xFF5A4FCF)],
                   count: widget.controller.contabilCourses.length,
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: responsivity.largeSpacing()),
                 _buildCategorySection(
                   title: 'Trabalhistas',
                   courses: widget.controller.trabalhistaCourses,
@@ -107,6 +113,7 @@ class _CourseListWidgetState extends State<CourseListWidget> {
     required List<Color> gradient,
     required int count,
   }) {
+    final responsivity = ResponsivityUtils(context);
     if (courses.isEmpty) {
       return const SizedBox.shrink(); // Não mostra seção vazia
     }
@@ -115,14 +122,18 @@ class _CourseListWidgetState extends State<CourseListWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.all(20),
+          padding: responsivity.responsiveAllPadding(
+            ResponsivityConstants.defaultSpacingPercentage,
+          ),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: gradient,
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
             ),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: responsivity.responsiveBorderRadius(
+              ResponsivityConstants.defaultSpacingPercentage,
+            ),
             boxShadow: [
               BoxShadow(
                 color: gradient[1].withValues(alpha: 0.3),
@@ -134,8 +145,8 @@ class _CourseListWidgetState extends State<CourseListWidget> {
           child: Row(
             children: [
               Container(
-                width: 48,
-                height: 48,
+                width: responsivity.largeIconSize(),
+                height: responsivity.largeIconSize(),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -145,30 +156,32 @@ class _CourseListWidgetState extends State<CourseListWidget> {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: responsivity.responsiveBorderRadius(
+                    ResponsivityConstants.smallSpacingPercentage,
+                  ),
                   border: Border.all(color: Colors.white.withValues(alpha: 0.2), width: 1),
                 ),
-                child: Icon(icon, color: Colors.white, size: 24),
+                child: Icon(icon, color: Colors.white, size: responsivity.mediumIconSize()),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: responsivity.defaultSpacing()),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
-                        fontSize: 24,
+                      style: TextStyle(
+                        fontSize: responsivity.largeTextSize(),
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                         letterSpacing: -0.3,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: responsivity.smallSpacing()),
                     Text(
                       'Explore ${count > 1 ? '$count cursos' : '1 curso'}',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: responsivity.textSize(),
                         color: Colors.white.withValues(alpha: 0.8),
                         fontWeight: FontWeight.w400,
                       ),
@@ -177,7 +190,10 @@ class _CourseListWidgetState extends State<CourseListWidget> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: responsivity.responsivePadding(
+                  horizontalPercentage: 0.03,
+                  verticalPercentage: 0.015,
+                ),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -185,14 +201,14 @@ class _CourseListWidgetState extends State<CourseListWidget> {
                       Colors.white.withValues(alpha: 0.1),
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: responsivity.responsiveBorderRadius(0.05),
                   border: Border.all(color: Colors.white.withValues(alpha: 0.2), width: 1),
                 ),
                 child: Text(
                   '$count',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: responsivity.textSize(),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -200,7 +216,7 @@ class _CourseListWidgetState extends State<CourseListWidget> {
             ],
           ),
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: responsivity.defaultSpacing()),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           padding: EdgeInsets.zero,

@@ -56,8 +56,7 @@ class _CourseListPageState extends State<CourseListPage> with AutomaticKeepAlive
           child: SingleChildScrollView(
             child: FlowStateWidget(
               title: 'Nenhum curso disponível',
-              description:
-                  'Não encontramos cursos nas categorias fiscais, contábeis e trabalhistas.',
+              description: 'Não encontramos cursos relacionados à alguma categoria.',
               hideButton: true,
               flowState: FlowState.empty,
             ),
@@ -69,21 +68,20 @@ class _CourseListPageState extends State<CourseListPage> with AutomaticKeepAlive
         return Center(
           child: SingleChildScrollView(
             child: FlowStateWidget(
-              function: () => widget.controller.loadAllCourses(),
+              function: () => widget.controller.loadAllCourses(refresh: true),
               title: "Sem conexão",
-              description: "Verifique sua conexão com a internet e tente novamente.",
+              description: "Verifique sua conexão com a internet.",
               flowState: FlowState.noConnection,
             ),
           ),
         );
-      case PageStates.errorState:
       default:
         return Center(
           child: SingleChildScrollView(
             child: FlowStateWidget(
-              function: () => widget.controller.loadAllCourses(),
+              function: () => widget.controller.loadAllCourses(refresh: true),
               title: "Erro ao carregar",
-              description: widget.controller.error ?? "Ocorreu um erro inesperado.",
+              description: "Ocorreu um erro desconhecido ao tentar carregar os cursos.",
               flowState: FlowState.error,
             ),
           ),

@@ -23,36 +23,6 @@ class CourseDetailsWidget extends StatelessWidget {
             return const AppLoadWidget(label: 'Carregando curso');
           }
 
-          if (controller.error != null) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.error_outline, size: 64, color: Colors.red),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Erro ao carregar curso',
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      controller.error!,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: controller.loadCourseDetails,
-                      child: const Text('Tentar novamente'),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }
-
           final courseDetails = controller.courseDetails;
           if (courseDetails == null) {
             return const Center(child: Text('Curso não encontrado'));

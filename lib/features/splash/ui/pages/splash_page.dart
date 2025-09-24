@@ -1,4 +1,5 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:lxp_platform/core/utils/responsivity_utils.dart';
 import 'package:lxp_platform/gen/assets.gen.dart';
 import 'package:lxp_platform/routes/app_routes_manager.dart';
 
@@ -26,8 +27,15 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+    final responsivity = ResponsivityUtils(context);
     return Scaffold(
-      body: Center(child: Assets.images.logo.image(width: 200, height: 200, fit: BoxFit.contain)),
+      body: Center(
+        child: Assets.images.logo.image(
+          width: responsivity.imageSize(),
+          height: responsivity.imageSize(),
+          fit: BoxFit.contain,
+        ),
+      ),
     );
   }
 }
