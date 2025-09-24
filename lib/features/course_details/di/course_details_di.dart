@@ -1,5 +1,4 @@
-﻿// lib/features/course_detail/di/course_detail_di.dart
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:lxp_platform/core/di/dependency_manager.dart';
 import 'package:lxp_platform/core/di/page_dependency.dart';
 import 'package:lxp_platform/data/repository/implementation/course_repository.dart';

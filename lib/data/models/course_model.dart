@@ -11,8 +11,4 @@ class CourseModel {
   factory CourseModel.fromDTO(CourseResponseDTO dto, String category) {
     return CourseModel(id: dto.id, title: dto.title, banner: dto.banner, category: category);
   }
-
-  static CourseModel empty() {
-    return CourseModel(id: '', title: '', category: '');
-  }
 }

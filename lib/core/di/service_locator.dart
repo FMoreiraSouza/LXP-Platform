@@ -9,10 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 final GetIt sl = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
-  // Connectivity
   sl.registerLazySingleton<Connectivity>(() => Connectivity());
 
-  // Dio
   sl.registerLazySingleton(
     () => Dio()
       ..options.baseUrl = 'https://cefis.com.br/api/v1'
@@ -21,14 +19,11 @@ Future<void> setupServiceLocator() async {
       ..options.headers = {'Content-Type': 'application/json', 'Accept': 'application/json'},
   );
 
-  // ApiService (se ainda for necessário)
   sl.registerLazySingleton(() => ApiClient());
 
-  // SharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerSingleton<SharedPreferences>(sharedPreferences);
 
-  // DataSource e Repository
   sl.registerLazySingleton<CourseDataSource>(
     () => CourseDataSource(dio: sl<Dio>(), connectivity: sl<Connectivity>()),
   );

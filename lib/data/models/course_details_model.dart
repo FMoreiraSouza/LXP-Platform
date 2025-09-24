@@ -2,7 +2,7 @@
 
 class CourseDetailsModel {
   final String id;
-  final String title; // FALTANDO
+  final String title;
   final String? subtitle;
   final String? banner;
   final String? summary;
@@ -10,7 +10,7 @@ class CourseDetailsModel {
 
   CourseDetailsModel({
     required this.id,
-    required this.title, // ADICIONAR
+    required this.title,
     this.subtitle,
     this.banner,
     this.summary,
@@ -20,7 +20,7 @@ class CourseDetailsModel {
   factory CourseDetailsModel.fromDTO(CourseDetailsResponseDTO dto) {
     return CourseDetailsModel(
       id: dto.id,
-      title: dto.title, // ADICIONAR
+      title: dto.title,
       subtitle: dto.subtitle,
       banner: dto.banner,
       summary: dto.summary,

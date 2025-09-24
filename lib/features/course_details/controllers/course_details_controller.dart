@@ -1,4 +1,6 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:lxp_platform/core/network/failure.dart';
+import 'package:lxp_platform/core/utils/enums/flow_state.dart';
 import 'package:lxp_platform/data/models/course_details_model.dart';
 import 'package:lxp_platform/features/course_details/usecases/get_course_details_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,10 +15,12 @@ class CourseDetailsController extends ChangeNotifier {
   CourseDetailsModel? _courseDetails;
   bool _isLoading = false;
   bool _isFavorite = false;
+  FlowState? _errorState;
 
   CourseDetailsModel? get courseDetails => _courseDetails;
   bool get isLoading => _isLoading;
   bool get isFavorite => _isFavorite;
+  FlowState? get errorState => _errorState;
 
   CourseDetailsController({
     required this.getCourseDetailsUseCase,
@@ -26,14 +30,16 @@ class CourseDetailsController extends ChangeNotifier {
 
   Future<void> loadCourseDetails() async {
     _isLoading = true;
+    _errorState = null;
     notifyListeners();
 
     final result = await getCourseDetailsUseCase.call(courseId);
     result.process(
       onError: (error) {
-        //Tratar isso
+        _errorState = error is ConnectionException ? FlowState.noConnection : FlowState.error;
       },
       onSuccess: (course) {
+        _errorState = null;
         _courseDetails = course;
         loadFavoriteStatus();
       },

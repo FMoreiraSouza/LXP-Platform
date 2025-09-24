@@ -59,11 +59,9 @@ class _CourseListWidgetState extends State<CourseListWidget> {
             ),
           ),
           SizedBox(height: responsivity.largeSpacing()),
-
           Expanded(
             child: ListView(
               children: [
-                // Seção de Cursos Favoritos (apenas se houver favoritos)
                 if (widget.controller.favoriteCourses.isNotEmpty) ...[
                   _buildCategorySection(
                     title: 'Seus Cursos Favoritos',
@@ -74,7 +72,6 @@ class _CourseListWidgetState extends State<CourseListWidget> {
                   ),
                   SizedBox(height: responsivity.largeSpacing()),
                 ],
-
                 _buildCategorySection(
                   title: 'Fiscais',
                   courses: widget.controller.fiscalCourses,
@@ -115,7 +112,7 @@ class _CourseListWidgetState extends State<CourseListWidget> {
   }) {
     final responsivity = ResponsivityUtils(context);
     if (courses.isEmpty) {
-      return const SizedBox.shrink(); // Não mostra seção vazia
+      return const SizedBox.shrink();
     }
 
     return Column(
@@ -227,9 +224,17 @@ class _CourseListWidgetState extends State<CourseListWidget> {
                 return CourseItemWidget(
                   course: course,
                   onCourseTap: (courseId) {
-                    Navigator.of(
-                      context,
-                    ).pushNamed(AppRoutesManager.courseDetails, arguments: courseId);
+                    Navigator.of(context)
+                        .pushNamed(
+                          AppRoutesManager.courseDetails,
+                          arguments: {'courseId': courseId},
+                        )
+                        .then((result) {
+                          if (result is Map<String, dynamic> &&
+                              result['favoritesChanged'] == true) {
+                            widget.controller.updateFavoriteCourses();
+                          }
+                        });
                   },
                 );
               }).toList(),

@@ -4,18 +4,17 @@ import 'package:lxp_platform/core/constants/responsivity_constants.dart';
 import 'package:lxp_platform/core/utils/responsivity_utils.dart';
 import 'package:lxp_platform/data/models/course_details_model.dart';
 import 'package:lxp_platform/features/course_details/controllers/course_details_controller.dart';
-import 'package:lxp_platform/features/course_list/controllers/course_list_controller.dart';
 
 class CourseContentWidget extends StatelessWidget {
   final CourseDetailsModel courseDetails;
   final CourseDetailsController controller;
-  final CourseListController courseListController;
+  final VoidCallback onFavoriteChanged;
 
   const CourseContentWidget({
     super.key,
     required this.courseDetails,
     required this.controller,
-    required this.courseListController,
+    required this.onFavoriteChanged,
   });
 
   @override
@@ -24,7 +23,6 @@ class CourseContentWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Cabeçalho com botão de voltar e banner
         Container(
           height:
               responsivity.statusBarHeight +
@@ -42,7 +40,7 @@ class CourseContentWidget extends StatelessWidget {
             child: IconButton(
               icon: Icon(Icons.arrow_back, color: Colors.white, size: responsivity.smallIconSize()),
               padding: EdgeInsets.zero,
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.of(context).pop({'favoritesChanged': true}),
             ),
           ),
         ),
@@ -50,7 +48,7 @@ class CourseContentWidget extends StatelessWidget {
           aspectRatio: 16 / 9,
           child: Stack(
             children: [
-              _buildBannerBackground(context), // Pass context here
+              _buildBannerBackground(context),
               Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
@@ -83,7 +81,6 @@ class CourseContentWidget extends StatelessWidget {
             ],
           ),
         ),
-        // Conteúdo principal
         Padding(
           padding: responsivity.responsiveAllPadding(
             ResponsivityConstants.defaultSpacingPercentage,
@@ -119,7 +116,7 @@ class CourseContentWidget extends StatelessWidget {
                         padding: EdgeInsets.zero,
                         onPressed: () async {
                           await controller.toggleFavorite();
-                          courseListController.updateFavoriteCourses();
+                          onFavoriteChanged();
                         },
                       ),
                     ),

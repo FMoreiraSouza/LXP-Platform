@@ -1,6 +1,6 @@
 ﻿class CourseDetailsResponseDTO {
   final String id;
-  final String title; // FALTANDO
+  final String title;
   final String? subtitle;
   final String? banner;
   final String? summary;
@@ -8,7 +8,7 @@
 
   CourseDetailsResponseDTO({
     required this.id,
-    required this.title, // ADICIONAR
+    required this.title,
     this.subtitle,
     this.banner,
     this.summary,
@@ -18,7 +18,7 @@
   factory CourseDetailsResponseDTO.fromMap(Map<String, dynamic> map) {
     return CourseDetailsResponseDTO(
       id: map['id']?.toString() ?? '',
-      title: map['title']?.toString() ?? 'Sem título', // ADICIONAR
+      title: map['title']?.toString() ?? 'Sem título',
       subtitle: map['subtitle']?.toString(),
       banner: map['banner']?.toString(),
       summary: map['resume']?.toString(),

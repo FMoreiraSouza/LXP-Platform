@@ -2,7 +2,6 @@
 import 'package:lxp_platform/features/course_details/controllers/course_details_controller.dart';
 import 'package:lxp_platform/features/course_details/ui/widgets/course_details_widget.dart';
 
-// Widget principal
 class CourseDetailsPage extends StatefulWidget {
   final CourseDetailsController controller;
 

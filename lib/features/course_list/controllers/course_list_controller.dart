@@ -1,6 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:lxp_platform/core/constants/page_states.dart';
-import 'package:lxp_platform/core/network/failure.dart'; // Importar para usar ConnectionException
+import 'package:lxp_platform/core/network/failure.dart';
 import 'package:lxp_platform/data/dto/request/get_courses_request_dto.dart';
 import 'package:lxp_platform/data/models/course_model.dart';
 import 'package:lxp_platform/features/course_list/usecases/get_courses_by_category_usecase.dart';
@@ -81,7 +81,7 @@ class CourseListController extends ChangeNotifier {
       results[i].process(
         onError: (error) {
           hasError = true;
-          _checkErrorState(error); // Passar o erro diretamente
+          _checkErrorState(error);
         },
         onSuccess: (courses) {
           switch (categories[i]) {
@@ -100,7 +100,6 @@ class CourseListController extends ChangeNotifier {
     }
 
     if (hasError) {
-      // O estado já foi atualizado em _checkErrorState
     } else if (_fiscalCourses.isNotEmpty ||
         _contabilCourses.isNotEmpty ||
         _trabalhistaCourses.isNotEmpty) {
@@ -118,11 +117,17 @@ class CourseListController extends ChangeNotifier {
   }
 
   void _loadFavoriteCourses() {
-    final favoriteIds =
-        sharedPreferences.getStringList(_favoriteCoursesKey)?.toSet().toList() ?? [];
+    final favoriteIds = sharedPreferences.getStringList(_favoriteCoursesKey) ?? [];
     final allCourses = [..._fiscalCourses, ..._contabilCourses, ..._trabalhistaCourses];
-    _favoriteCourses = allCourses.where((course) => favoriteIds.contains(course.id)).toList();
-    sharedPreferences.setStringList(_favoriteCoursesKey, favoriteIds);
+
+    final uniqueFavorites = <String>{};
+    _favoriteCourses = allCourses
+        .where((course) => favoriteIds.contains(course.id) && uniqueFavorites.add(course.id))
+        .toList();
+
+    final uniqueFavoriteIds = favoriteIds.toSet().toList();
+    sharedPreferences.setStringList(_favoriteCoursesKey, uniqueFavoriteIds);
+
     notifyListeners();
   }
 

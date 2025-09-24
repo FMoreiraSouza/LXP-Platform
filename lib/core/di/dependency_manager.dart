@@ -1,5 +1,4 @@
-﻿// lib/core/di/dependency_manager.dart
-import 'package:lxp_platform/core/di/service_locator.dart';
+﻿import 'package:lxp_platform/core/di/service_locator.dart';
 
 class DependencyManager {
   static T registerSingleton<T extends Object>(T instance) {

@@ -21,7 +21,14 @@ class AppRoutesManager {
         return MaterialPageRoute(builder: (_) => di.getPage());
 
       case courseDetails:
-        final courseId = settings.arguments as String;
+        final args = settings.arguments as Map<String, dynamic>?;
+        final courseId = args?['courseId'] as String? ?? '';
+        if (courseId.isEmpty) {
+          return MaterialPageRoute(
+            builder: (_) =>
+                const Scaffold(body: Center(child: Text('Erro: ID do curso não fornecido'))),
+          );
+        }
         final di = CourseDetailsDI(courseId: courseId);
         di.init();
         return MaterialPageRoute(builder: (_) => di.getPage());

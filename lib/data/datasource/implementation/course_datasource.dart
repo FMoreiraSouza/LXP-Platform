@@ -15,7 +15,7 @@ class CourseDataSource extends BaseConnectionService implements ICourseDataSourc
 
   @override
   Future<List<CourseResponseDTO>> getCoursesByCategory(GetCoursesRequestDTO params) async {
-    await isConnected(); // Verifica a conectividade antes da requisição
+    await isConnected();
 
     try {
       final response = await dio.get('/event', queryParameters: params.toMap());
@@ -38,29 +38,36 @@ class CourseDataSource extends BaseConnectionService implements ICourseDataSourc
       if (e is DioException && e.type == DioExceptionType.connectionTimeout) {
         throw ConnectionException('Falha na conexão com o servidor.');
       }
-      rethrow;
+      throw ServerException('Erro ao carregar cursos: ${e.toString()}');
     }
   }
 
   @override
   Future<CourseDetailsResponseDTO> getCourseDetails(String courseId) async {
-    await isConnected(); // Verifica a conectividade antes da requisição
+    await isConnected();
 
     try {
       final response = await dio.get('/event/$courseId');
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = response.data;
-        final Map<String, dynamic> courseData = responseData["data"] as Map<String, dynamic>;
-        return CourseDetailsResponseDTO.fromMap(courseData);
+        final data = response.data;
+        if (data is Map<String, dynamic> && data.containsKey('data')) {
+          final Map<String, dynamic> courseData = data['data'] as Map<String, dynamic>;
+          return CourseDetailsResponseDTO.fromMap(courseData);
+        } else {
+          throw ServerException('Resposta inválida ao carregar detalhes do curso');
+        }
       } else {
-        throw ServerException('Failed to load course details');
+        throw ServerException('Erro ao carregar detalhes do curso');
       }
     } catch (e) {
-      if (e is DioException && e.type == DioExceptionType.connectionTimeout) {
-        throw ConnectionException('Falha na conexão com o servidor.');
+      if (e is DioException) {
+        if (e.type == DioExceptionType.connectionTimeout) {
+          throw ConnectionException('Falha na conexão com o servidor.');
+        }
+        throw ServerException('Erro ao carregar detalhes do curso}');
       }
-      rethrow;
+      throw ServerException('Erro inesperado: ${e.toString()}');
     }
   }
 }

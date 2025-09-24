@@ -28,20 +28,22 @@ class _CourseListPageState extends State<CourseListPage> with AutomaticKeepAlive
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      body: SafeArea(
-        child: AnimatedBuilder(
-          animation: widget.controller,
-          builder: (context, child) {
-            return _getWidget(widget.controller.state);
-          },
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop && result is Map<String, dynamic> && result['favoritesChanged'] == true) {
+          widget.controller.updateFavoriteCourses();
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: AnimatedBuilder(
+            animation: widget.controller,
+            builder: (context, child) {
+              return _getWidget(widget.controller.state);
+            },
+          ),
         ),
       ),
     );

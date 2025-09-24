@@ -1,5 +1,4 @@
-﻿// lib/features/course_detail/usecases/get_course_details_usecase.dart
-import 'package:lxp_platform/core/network/failure.dart';
+﻿import 'package:lxp_platform/core/network/failure.dart';
 import 'package:lxp_platform/core/network/result_data.dart';
 import 'package:lxp_platform/core/network/usecase.dart';
 import 'package:lxp_platform/data/models/course_details_model.dart';
