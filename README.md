@@ -78,4 +78,4 @@ Siga as instruções abaixo para rodar o projeto localmente:
 ### Telas
 | Splash | Course List | Course Details | Course Details Favorite | Course List Favorite |
 |--------|-------------|----------------|-------------------------|---------------------|
-| ![Splash](views/splash.png) | ![Course List](views/course_list.png) | ![Course Details](views/course_details.png) | ![Course Details Favorite](views/course_details_favorite.png) | ![Course List Favorite](views/course_list_favorite.png) |
+| ![Splash](images/splash.png) | ![Course List](images/course_list.png) | ![Course Details](images/course_details.png) | ![Course Details Favorite](images/course_details_favorite.png) | ![Course List Favorite](images/course_list_favorite.png) |
