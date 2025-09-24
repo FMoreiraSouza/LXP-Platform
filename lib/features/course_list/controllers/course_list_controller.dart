@@ -1,5 +1,4 @@
-﻿// Atualize o CourseListController existente
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:lxp_platform/core/constants/page_states.dart';
 import 'package:lxp_platform/core/network/failure.dart';
 import 'package:lxp_platform/data/dto/request/get_courses_request_dto.dart';
@@ -25,7 +24,12 @@ class CourseListController extends ChangeNotifier {
   bool _isLoading = false;
   String? _error;
 
+  bool _hasLoaded = false;
+  DateTime? _lastLoadTime;
+  static const Duration _cacheDuration = Duration(minutes: 10);
+
   static const String _favoriteCoursesKey = 'favorite_courses';
+  static const String _lastLoadTimeKey = 'courses_last_load_time';
 
   List<CourseModel> get fiscalCourses => _fiscalCourses;
   List<CourseModel> get contabilCourses => _contabilCourses;
@@ -36,14 +40,41 @@ class CourseListController extends ChangeNotifier {
   String? get error => _error;
 
   void initPage() {
+    _loadLastLoadTime();
+
+    // Forçar recarregamento se as listas estão vazias (ex.: após hot restart)
+    if (_fiscalCourses.isEmpty && _contabilCourses.isEmpty && _trabalhistaCourses.isEmpty) {
+      _hasLoaded = false;
+    }
+
+    // Sempre definir o estado inicial como loading antes de verificar o cache
+    _updateState(PageStates.loadingState);
+    notifyListeners(); // Garantir que a UI reflita o estado de loading
+
+    if (_hasLoaded && _shouldUseCache()) {
+      _updateState(PageStates.successState);
+      _loadFavoriteCourses();
+      return;
+    }
+
     loadAllCourses();
-    _loadFavoriteCourses();
+  }
+
+  bool _shouldUseCache() {
+    if (_lastLoadTime == null) return false;
+
+    final now = DateTime.now();
+    final difference = now.difference(_lastLoadTime!);
+    return difference < _cacheDuration;
   }
 
   Future<void> loadAllCourses() async {
-    _updateState(PageStates.loadingState);
+    if (_isLoading) return;
+
+    _updateState(PageStates.loadingState); // Reforçar o estado de loading
     _setLoading(true);
     _error = null;
+    notifyListeners(); // Garantir que a UI mostre o AppLoadWidget
 
     try {
       await Future.wait([
@@ -59,9 +90,14 @@ class CourseListController extends ChangeNotifier {
 
       if (hasCourses) {
         _updateState(PageStates.successState);
+        _hasLoaded = true;
+        _lastLoadTime = DateTime.now();
+        _saveLastLoadTime();
       } else {
         _updateState(PageStates.emptyState);
       }
+
+      _loadFavoriteCourses();
     } on Failure catch (e) {
       _error = e.message;
       _checkErrorState(e);
@@ -70,6 +106,7 @@ class CourseListController extends ChangeNotifier {
       _updateState(PageStates.errorState);
     } finally {
       _setLoading(false);
+      notifyListeners(); // Garantir que a UI seja atualizada após o carregamento
     }
   }
 
@@ -96,11 +133,18 @@ class CourseListController extends ChangeNotifier {
 
   void _loadFavoriteCourses() {
     final favoriteIds = sharedPreferences.getStringList(_favoriteCoursesKey) ?? [];
-
-    // Combinar todas as listas de cursos para encontrar os favoritos
     final allCourses = [..._fiscalCourses, ..._contabilCourses, ..._trabalhistaCourses];
 
-    _favoriteCourses = allCourses.where((course) => favoriteIds.contains(course.id)).toList();
+    // Remove duplicatas usando um Set para IDs únicos
+    final uniqueFavorites = <String>{};
+    _favoriteCourses = allCourses
+        .where((course) => favoriteIds.contains(course.id) && uniqueFavorites.add(course.id))
+        .toList();
+
+    // Limpa duplicatas no SharedPreferences
+    final uniqueFavoriteIds = favoriteIds.toSet().toList();
+    sharedPreferences.setStringList(_favoriteCoursesKey, uniqueFavoriteIds);
+
     notifyListeners();
   }
 
@@ -127,6 +171,34 @@ class CourseListController extends ChangeNotifier {
   void _setLoading(bool value) {
     _isLoading = value;
     notifyListeners();
+  }
+
+  void _saveLastLoadTime() {
+    final timestamp = _lastLoadTime?.millisecondsSinceEpoch.toString();
+    if (timestamp != null) {
+      sharedPreferences.setString(_lastLoadTimeKey, timestamp);
+    }
+  }
+
+  void _loadLastLoadTime() {
+    final timestamp = sharedPreferences.getString(_lastLoadTimeKey);
+    if (timestamp != null) {
+      _lastLoadTime = DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp));
+      // Só considerar _hasLoaded como true se as listas não estiverem vazias
+      if (_fiscalCourses.isNotEmpty ||
+          _contabilCourses.isNotEmpty ||
+          _trabalhistaCourses.isNotEmpty) {
+        _hasLoaded = true;
+      } else {
+        _hasLoaded = false; // Forçar recarregamento se listas estão vazias
+      }
+    }
+  }
+
+  Future<void> refreshCourses() async {
+    _hasLoaded = false;
+    _lastLoadTime = null;
+    await loadAllCourses();
   }
 
   void disposeControllers() {

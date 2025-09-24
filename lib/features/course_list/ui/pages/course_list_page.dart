@@ -15,23 +15,26 @@ class CourseListPage extends StatefulWidget {
   State<CourseListPage> createState() => _CourseListPageState();
 }
 
-class _CourseListPageState extends State<CourseListPage> {
+class _CourseListPageState extends State<CourseListPage> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.controller.initPage();
     });
-    super.initState();
   }
 
   @override
   void dispose() {
-    widget.controller.disposeControllers();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: SafeArea(
         child: AnimatedBuilder(

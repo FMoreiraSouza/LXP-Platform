@@ -38,7 +38,10 @@ class CourseDataSource implements ICourseDataSource {
       final response = await dio.get('/event/$courseId');
 
       if (response.statusCode == 200) {
-        return CourseDetailsResponseDTO.fromMap(response.data);
+        final Map<String, dynamic> responseData = response.data;
+        final Map<String, dynamic> courseData = responseData["data"] as Map<String, dynamic>;
+        var data = CourseDetailsResponseDTO.fromMap(courseData);
+        return data;
       } else {
         throw ServerException('Failed to load course details');
       }

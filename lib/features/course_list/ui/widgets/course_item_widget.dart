@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:lxp_platform/data/models/course_model.dart';
 
 class CourseItemWidget extends StatelessWidget {
@@ -27,10 +28,7 @@ class CourseItemWidget extends StatelessWidget {
             aspectRatio: 16 / 9,
             child: Stack(
               children: [
-                // Banner background
                 _buildBannerBackground(context),
-
-                // Gradient overlay
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
@@ -41,8 +39,6 @@ class CourseItemWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                // Title (só aparece se não tiver banner)
                 if (_hasNoBanner())
                   Positioned(
                     bottom: 12,
@@ -78,18 +74,13 @@ class CourseItemWidget extends StatelessWidget {
     if (course.banner != null && course.banner!.isNotEmpty) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: Image.network(
-          course.banner!,
+        child: CachedNetworkImage(
+          imageUrl: course.banner!,
           width: double.infinity,
           height: double.infinity,
           fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) {
-            return _buildPlaceholder(context);
-          },
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) return child;
-            return _buildLoadingPlaceholder();
-          },
+          placeholder: (context, url) => _buildLoadingPlaceholder(),
+          errorWidget: (context, url, error) => _buildPlaceholder(context),
         ),
       );
     } else {
@@ -107,7 +98,7 @@ class CourseItemWidget extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Theme.of(context).colorScheme.primary.withValues(alpha: 0.1), Colors.black54],
+          colors: [Theme.of(context).colorScheme.primary.withOpacity(0.1), Colors.black54],
         ),
       ),
       child: const Center(child: Icon(Icons.school, size: 48, color: Color(0xFF4A90E2))),

@@ -1,7 +1,7 @@
 ﻿// lib/core/di/service_locator.dart
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:lxp_platform/core/network/api_service.dart';
+import 'package:lxp_platform/core/network/api_client.dart';
 import 'package:lxp_platform/data/datasource/implementation/course_datasource.dart';
 import 'package:lxp_platform/data/repository/implementation/course_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,7 +19,7 @@ Future<void> setupServiceLocator() async {
   );
 
   // ApiService (se ainda for necessário)
-  sl.registerLazySingleton(() => ApiService());
+  sl.registerLazySingleton(() => ApiClient());
 
   // SharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();
