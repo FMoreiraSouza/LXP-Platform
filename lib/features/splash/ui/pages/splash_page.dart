@@ -1,5 +1,7 @@
-﻿// lib/features/splash/ui/pages/splash_page.dart
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:lxp_platform/core/utils/responsivity_utils.dart';
+import 'package:lxp_platform/gen/assets.gen.dart';
+import 'package:lxp_platform/routes/app_routes_manager.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -16,42 +18,22 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _navigateToCourseList() async {
-    // Aguarda 2 segundos para mostrar a splash screen
     await Future.delayed(const Duration(seconds: 2));
 
     if (mounted) {
-      Navigator.of(context).pushReplacementNamed('/course-list');
+      Navigator.of(context).pushReplacementNamed(AppRoutesManager.courseList);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final responsivity = ResponsivityUtils(context);
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Logo do app - você pode substituir por um asset real
-            FlutterLogo(size: 100, style: FlutterLogoStyle.stacked),
-            const SizedBox(height: 24),
-            const Text(
-              'CEFIS LXP',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
-                letterSpacing: 1.2,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Plataforma de Aprendizado',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 32),
-            const CircularProgressIndicator(color: Colors.blue, strokeWidth: 2),
-          ],
+        child: Assets.images.logo.image(
+          width: responsivity.imageSize(),
+          height: responsivity.imageSize(),
+          fit: BoxFit.contain,
         ),
       ),
     );
