@@ -1,13 +1,13 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:lxp_platform/core/constants/page_states.dart';
 import 'package:lxp_platform/core/network/failure.dart';
-import 'package:lxp_platform/data/dto/request/get_courses_request_dto.dart';
+import 'package:lxp_platform/data/dto/request/get_course_list_request_dto.dart';
 import 'package:lxp_platform/data/models/course_model.dart';
-import 'package:lxp_platform/features/course_list/usecases/get_courses_by_category_usecase.dart';
+import 'package:lxp_platform/features/course_list/usecases/get_course_list_by_category_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CourseListController extends ChangeNotifier {
-  final GetCoursesByCategoryUseCase getCoursesByCategoryUseCase;
+  final GetCourseListByCategoryUseCase getCoursesByCategoryUseCase;
   final SharedPreferences sharedPreferences;
 
   CourseListController({
@@ -15,10 +15,10 @@ class CourseListController extends ChangeNotifier {
     required this.sharedPreferences,
   });
 
-  List<CourseModel> _fiscalCourses = [];
-  List<CourseModel> _contabilCourses = [];
-  List<CourseModel> _trabalhistaCourses = [];
-  List<CourseModel> _favoriteCourses = [];
+  List<CourseModel> _taxCourseList = [];
+  List<CourseModel> _accountingCourseList = [];
+  List<CourseModel> _laborCourseList = [];
+  List<CourseModel> _favoriteCourseList = [];
 
   int _state = PageStates.loadingState;
   bool _isLoading = false;
@@ -28,10 +28,10 @@ class CourseListController extends ChangeNotifier {
   static const String _favoriteCoursesKey = 'favorite_courses';
   static const String _lastLoadTimeKey = 'courses_last_load_time';
 
-  List<CourseModel> get fiscalCourses => _fiscalCourses;
-  List<CourseModel> get contabilCourses => _contabilCourses;
-  List<CourseModel> get trabalhistaCourses => _trabalhistaCourses;
-  List<CourseModel> get favoriteCourses => _favoriteCourses;
+  List<CourseModel> get taxCourses => _taxCourseList;
+  List<CourseModel> get accountingCourses => _accountingCourseList;
+  List<CourseModel> get laborCourses => _laborCourseList;
+  List<CourseModel> get favoriteCourses => _favoriteCourseList;
   int get state => _state;
   bool get isLoading => _isLoading;
 
@@ -59,10 +59,10 @@ class CourseListController extends ChangeNotifier {
       _updateState(PageStates.loadingState);
       _hasLoaded = false;
       _lastLoadTime = null;
-      _fiscalCourses.clear();
-      _contabilCourses.clear();
-      _trabalhistaCourses.clear();
-      _favoriteCourses.clear();
+      _taxCourseList.clear();
+      _accountingCourseList.clear();
+      _laborCourseList.clear();
+      _favoriteCourseList.clear();
     }
     if (_isLoading) return;
 
@@ -72,7 +72,7 @@ class CourseListController extends ChangeNotifier {
     final categories = ['fiscal', 'contabil', 'trabalhista'];
     final results = await Future.wait(
       categories.map(
-        (category) => getCoursesByCategoryUseCase.call(GetCoursesRequestDTO(category: category)),
+        (category) => getCoursesByCategoryUseCase.call(GetCourseListRequestDTO(category: category)),
       ),
     );
 
@@ -83,16 +83,16 @@ class CourseListController extends ChangeNotifier {
           hasError = true;
           _checkErrorState(error);
         },
-        onSuccess: (courses) {
+        onSuccess: (courseList) {
           switch (categories[i]) {
             case 'fiscal':
-              _fiscalCourses = courses;
+              _taxCourseList = courseList;
               break;
             case 'contabil':
-              _contabilCourses = courses;
+              _accountingCourseList = courseList;
               break;
             case 'trabalhista':
-              _trabalhistaCourses = courses;
+              _laborCourseList = courseList;
               break;
           }
         },
@@ -100,9 +100,9 @@ class CourseListController extends ChangeNotifier {
     }
 
     if (hasError) {
-    } else if (_fiscalCourses.isNotEmpty ||
-        _contabilCourses.isNotEmpty ||
-        _trabalhistaCourses.isNotEmpty) {
+    } else if (_taxCourseList.isNotEmpty ||
+        _accountingCourseList.isNotEmpty ||
+        _laborCourseList.isNotEmpty) {
       _updateState(PageStates.successState);
       _hasLoaded = true;
       _lastLoadTime = DateTime.now();
@@ -118,10 +118,10 @@ class CourseListController extends ChangeNotifier {
 
   void _loadFavoriteCourses() {
     final favoriteIds = sharedPreferences.getStringList(_favoriteCoursesKey) ?? [];
-    final allCourses = [..._fiscalCourses, ..._contabilCourses, ..._trabalhistaCourses];
+    final allCourses = [..._taxCourseList, ..._accountingCourseList, ..._laborCourseList];
 
     final uniqueFavorites = <String>{};
-    _favoriteCourses = allCourses
+    _favoriteCourseList = allCourses
         .where((course) => favoriteIds.contains(course.id) && uniqueFavorites.add(course.id))
         .toList();
 
@@ -167,9 +167,9 @@ class CourseListController extends ChangeNotifier {
     if (timestamp != null) {
       _lastLoadTime = DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp));
       _hasLoaded =
-          _fiscalCourses.isNotEmpty ||
-          _contabilCourses.isNotEmpty ||
-          _trabalhistaCourses.isNotEmpty;
+          _taxCourseList.isNotEmpty ||
+          _accountingCourseList.isNotEmpty ||
+          _laborCourseList.isNotEmpty;
     }
   }
 

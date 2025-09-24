@@ -1,7 +1,7 @@
-﻿class GetCoursesRequestDTO {
+﻿class GetCourseListRequestDTO {
   final String category;
 
-  GetCoursesRequestDTO({required this.category});
+  GetCourseListRequestDTO({required this.category});
 
   Map<String, dynamic> toMap() {
     return {'c': category};

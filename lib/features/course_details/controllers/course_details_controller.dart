@@ -1,6 +1,7 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:lxp_platform/core/network/failure.dart';
 import 'package:lxp_platform/core/utils/enums/flow_state.dart';
+import 'package:lxp_platform/data/dto/request/get_course_details_request_dto.dart';
 import 'package:lxp_platform/data/models/course_details_model.dart';
 import 'package:lxp_platform/features/course_details/usecases/get_course_details_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,7 +34,9 @@ class CourseDetailsController extends ChangeNotifier {
     _errorState = null;
     notifyListeners();
 
-    final result = await getCourseDetailsUseCase.call(courseId);
+    final requestDTO = GetCourseDetailsRequestDTO(courseId: courseId);
+    final result = await getCourseDetailsUseCase.call(requestDTO);
+
     result.process(
       onError: (error) {
         _errorState = error is ConnectionException ? FlowState.noConnection : FlowState.error;

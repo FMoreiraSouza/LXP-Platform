@@ -3,7 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:lxp_platform/core/network/base_connection_service.dart';
 import 'package:lxp_platform/core/network/failure.dart';
 import 'package:lxp_platform/data/datasource/i_course_datasource.dart';
-import 'package:lxp_platform/data/dto/request/get_courses_request_dto.dart';
+import 'package:lxp_platform/data/dto/request/get_course_details_request_dto.dart';
+import 'package:lxp_platform/data/dto/request/get_course_list_request_dto.dart';
 import 'package:lxp_platform/data/dto/response/course_details_response_dto.dart';
 import 'package:lxp_platform/data/dto/response/course_response_dto.dart';
 
@@ -14,7 +15,7 @@ class CourseDataSource extends BaseConnectionService implements ICourseDataSourc
     : super(connectivity: connectivity);
 
   @override
-  Future<List<CourseResponseDTO>> getCoursesByCategory(GetCoursesRequestDTO params) async {
+  Future<List<CourseResponseDTO>> getCoursesByCategory(GetCourseListRequestDTO params) async {
     await isConnected();
 
     try {
@@ -43,11 +44,11 @@ class CourseDataSource extends BaseConnectionService implements ICourseDataSourc
   }
 
   @override
-  Future<CourseDetailsResponseDTO> getCourseDetails(String courseId) async {
+  Future<CourseDetailsResponseDTO> getCourseDetails(GetCourseDetailsRequestDTO params) async {
     await isConnected();
 
     try {
-      final response = await dio.get('/event/$courseId');
+      final response = await dio.get('/event/${params.courseId}');
 
       if (response.statusCode == 200) {
         final data = response.data;
@@ -65,7 +66,7 @@ class CourseDataSource extends BaseConnectionService implements ICourseDataSourc
         if (e.type == DioExceptionType.connectionTimeout) {
           throw ConnectionException('Falha na conexão com o servidor.');
         }
-        throw ServerException('Erro ao carregar detalhes do curso}');
+        throw ServerException('Erro ao carregar detalhes do curso');
       }
       throw ServerException('Erro inesperado: ${e.toString()}');
     }
