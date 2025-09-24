@@ -77,9 +77,9 @@ Siga as instruções abaixo para rodar o projeto localmente:
 
 ### Telas do Aplicativo
 <div style="display: flex; flex-wrap: nowrap;">
-  <img src="assets/images/splash.png" alt="Splash" width="180"/>
-  <img src="assets/images/course_list.png" alt="Course List" width="180"/>
-  <img src="assets/images/course_details.png" alt="Course Details" width="180"/>
-  <img src="assets/images/course_details_favorite.png" alt="Course Details Favorite" width="180"/>
-  <img src="assets/images/course_list_favorite.png" alt="Course List Favorite" width="180"/>
+  <img src="assets/images/splash.png" alt="Splash" width="200"/>
+  <img src="assets/images/course_list.png" alt="Course List" width="200"/>
+  <img src="assets/images/course_details.png" alt="Course Details" width="200"/>
+  <img src="assets/images/course_details_favorite.png" alt="Course Details Favorite" width="200"/>
+  <img src="assets/images/course_list_favorite.png" alt="Course List Favorite" width="200"/>
 </div>
