@@ -50,7 +50,6 @@ Siga as instruções abaixo para rodar o projeto localmente:
 ### Funcionalidades
 1. **Tela de SplashScreen**:
 - Exibe o logotipo e o nome do aplicativo por 2 segundos antes de redirecionar para a tela de listagem de cursos.
-- Imagem: <img src="screenshots/splash_screen.png" alt="SplashScreen">
 
 2. **Tela de Listagem de Cursos**:
 - Exibe três categorias de cursos (Fiscal, Contábil e Trabalhista) em carrosséis horizontais.
@@ -60,13 +59,11 @@ Siga as instruções abaixo para rodar o projeto localmente:
   - Trabalhista: GET https://cefis.com.br/api/v1/event?c=trabalhista
 - Exibe uma categoria adicional chamada "Seus Cursos Favoritos" quando o usuário favorita cursos.
 - Cada card no carrossel exibe o banner do curso como fundo e o título sobreposto.
-- Imagem: <img src="screenshots/course_list.png" alt="CourseList">
 
 3. **Tela de Detalhes do Curso**:
 - Acessada ao clicar em um card na tela de listagem.
 - Consome o endpoint GET https://cefis.com.br/api/v1/event/<courseId> para exibir detalhes como banner, subtítulo, resumo e objetivo.
 - Inclui um botão para favoritar/desfavoritar o curso, utilizando SharedPreferences para persistência local.
-- Imagem: <img src="screenshots/course_details.png" alt="CourseDetails">
 
 4. **Favoritos**:
 - Cursos favoritados são salvos localmente usando SharedPreferences.
@@ -77,3 +74,8 @@ Siga as instruções abaixo para rodar o projeto localmente:
 - Tratamento de Erros: O aplicativo lida com falhas de conexão e erros de servidor, exibindo mensagens amigáveis ao usuário.
 - Responsividade: O layout foi projetado para se adaptar a diferentes tamanhos de tela usando a classe ResponsivityUtils.
 - Tema: O aplicativo utiliza um tema escuro com cores personalizadas para uma experiência visual consistente.
+
+### Telas
+| Splash | Course List | Course Details | Course Details Favorite | Course List Favorite |
+|--------|-------------|----------------|-------------------------|---------------------|
+| ![Splash](views/splash.png) | ![Course List](views/course_list.png) | ![Course Details](views/course_details.png) | ![Course Details Favorite](views/course_details_favorite.png) | ![Course List Favorite](views/course_list_favorite.png) |
