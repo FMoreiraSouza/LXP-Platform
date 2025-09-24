@@ -1,5 +1,5 @@
-# LXP Platform - Tech Challenge CEFIS
-Este é o aplicativo desenvolvido para o **Tech Challenge CEFIS**, uma plataforma de experiência de aprendizado (LXP) que permite aos usuários visualizar cursos online organizados por categorias e acessar detalhes de cursos, incluindo a funcionalidade de favoritar cursos.
+# LXP Platform
+Este aplicativo consiste em uma plataforma para experiência de aprendizado (LXP) que permite aos usuários visualizar cursos online organizados por categorias e acessar detalhes de cursos, incluindo a funcionalidade de favoritar cursos.
 
 ## Tecnologias Utilizadas
 - **Flutter**: Framework principal para desenvolvimento do aplicativo.
@@ -76,6 +76,10 @@ Siga as instruções abaixo para rodar o projeto localmente:
 - Tema: O aplicativo utiliza um tema escuro com cores personalizadas para uma experiência visual consistente.
 
 ### Telas
-| Splash | Course List | Course Details | Course Details Favorite | Course List Favorite |
-|--------|-------------|----------------|-------------------------|---------------------|
-| ![Splash](images/splash.png) | ![Course List](images/course_list.png) | ![Course Details](images/course_details.png) | ![Course Details Favorite](images/course_details_favorite.png) | ![Course List Favorite](images/course_list_favorite.png) |
+<div style="display: flex; flex-wrap: nowrap;">
+  <img src="assets/images/splash.png" alt="Splash" width="180" style="margin-right: 50;"/>
+  <img src="assets/images/course_list.png" alt="Course List" width="180" style="margin-right: 50;"/>
+  <img src="assets/images/course_details.png" alt="Course Details" width="180" style="margin-right: 50;"/>
+  <img src="assets/images/course_details_favorite.png" alt="Course Details Favorite" width="180" style="margin-right: 50;"/>
+  <img src="assets/images/course_list_favorite.png" alt="Course List Favorite" width="180"/>
+</div>
