@@ -92,7 +92,7 @@ class _CourseListWidgetState extends State<CourseListWidget> {
                   title: 'Trabalhistas',
                   courses: widget.controller.trabalhistaCourses,
                   icon: Icons.work,
-                  gradient: const [Color(0xFFFF6B6B), Color(0xFFEE5A52)],
+                  gradient: const [Color(0xFFFFD700), Color(0xFFFFA000)],
                   count: widget.controller.trabalhistaCourses.length,
                 ),
               ],
