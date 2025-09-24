@@ -43,11 +43,7 @@ Siga as instruções abaixo para rodar o projeto localmente:
    ```bash
    flutter run
 
-### Observações
-- Certifique-se de que o dispositivo/emulador esteja conectado à internet para carregar os dados dos cursos.
-- O projeto foi testado em dispositivos Android e iOS, além de navegadores web (Chrome).
-
-### Funcionalidades
+## Funcionalidades
 1. **Tela de SplashScreen**:
 - Exibe o logotipo e o nome do aplicativo por 2 segundos antes de redirecionar para a tela de listagem de cursos.
 
@@ -75,7 +71,7 @@ Siga as instruções abaixo para rodar o projeto localmente:
 - Responsividade: O layout foi projetado para se adaptar a diferentes tamanhos de tela usando a classe ResponsivityUtils.
 - Tema: O aplicativo utiliza um tema escuro com cores personalizadas para uma experiência visual consistente.
 
-### Telas do Aplicativo
+## Telas do Aplicativo
 <div style="display: flex; flex-wrap: nowrap;">
   <img src="assets/images/splash.png" alt="Splash" width="250"/>
   <img src="assets/images/course_list.png" alt="Course List" width="250"/>
