@@ -75,11 +75,11 @@ Siga as instruções abaixo para rodar o projeto localmente:
 - Responsividade: O layout foi projetado para se adaptar a diferentes tamanhos de tela usando a classe ResponsivityUtils.
 - Tema: O aplicativo utiliza um tema escuro com cores personalizadas para uma experiência visual consistente.
 
-### Telas
+### Telas do Aplicativo
 <div style="display: flex; flex-wrap: nowrap;">
-  <img src="assets/images/splash.png" alt="Splash" width="180" style="margin-right: 50;"/>
-  <img src="assets/images/course_list.png" alt="Course List" width="180" style="margin-right: 50;"/>
-  <img src="assets/images/course_details.png" alt="Course Details" width="180" style="margin-right: 50;"/>
-  <img src="assets/images/course_details_favorite.png" alt="Course Details Favorite" width="180" style="margin-right: 50;"/>
+  <img src="assets/images/splash.png" alt="Splash" width="180"/>
+  <img src="assets/images/course_list.png" alt="Course List" width="180"/>
+  <img src="assets/images/course_details.png" alt="Course Details" width="180"/>
+  <img src="assets/images/course_details_favorite.png" alt="Course Details Favorite" width="180"/>
   <img src="assets/images/course_list_favorite.png" alt="Course List Favorite" width="180"/>
 </div>
