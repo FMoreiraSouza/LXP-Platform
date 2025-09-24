@@ -113,7 +113,7 @@ class CourseItemWidget extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Theme.of(context).colorScheme.primary.withOpacity(0.1), Colors.black54],
+          colors: [Theme.of(context).colorScheme.primary, Colors.black54],
         ),
       ),
       child: Center(

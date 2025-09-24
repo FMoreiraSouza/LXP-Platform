@@ -36,7 +36,10 @@ class CourseContentWidget extends StatelessWidget {
           child: Container(
             width: responsivity.buttonSize(),
             height: responsivity.buttonSize(),
-            decoration: BoxDecoration(color: Colors.black.withOpacity(0.6), shape: BoxShape.circle),
+            decoration: BoxDecoration(
+              color: Colors.black.withValues(alpha: 0.6),
+              shape: BoxShape.circle,
+            ),
             child: IconButton(
               icon: Icon(Icons.arrow_back, color: Colors.white, size: responsivity.smallIconSize()),
               padding: EdgeInsets.zero,
@@ -104,7 +107,7 @@ class CourseContentWidget extends StatelessWidget {
                       width: responsivity.buttonSize(),
                       height: responsivity.buttonSize(),
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.6),
+                        color: Colors.black.withValues(alpha: 0.6),
                         shape: BoxShape.circle,
                       ),
                       child: IconButton(
@@ -209,7 +212,7 @@ class CourseContentWidget extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [const Color(0xFF4A90E2).withOpacity(0.8), const Color(0xFF121212)],
+          colors: [const Color(0xFF4A90E2), const Color(0xFF121212)],
         ),
       ),
       child: Center(
